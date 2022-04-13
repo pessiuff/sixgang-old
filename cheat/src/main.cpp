@@ -5,14 +5,11 @@
 // expose our cheat to main.cpp
 #include "core/hooks.h"
 
+#include "core/config.h"
+
 // setup our cheat & unload it when exit key is pressed
 DWORD WINAPI Setup(LPVOID lpParam)
 {
-	memory::Setup();		// find signatures
-	interfaces::Setup();    // capture interfaces
-	netvars::Setup();		// dump latest offsets
-	hooks::Setup();			// place hooks
-
 #ifdef _DEBUG
 	// create console for debugging in windows using freopen_s
 	AllocConsole();
@@ -22,6 +19,13 @@ DWORD WINAPI Setup(LPVOID lpParam)
 	// set console title
 	SetConsoleTitleA("[DEBUG]");
 #endif
+
+	memory::Setup();		// find signatures
+	interfaces::Setup();    // capture interfaces
+	netvars::Setup();		// dump latest offsets`
+	hooks::Setup();			// place hooks
+
+	config::Setup();        // setup config
 
 	// sleep our thread until unload key is pressed
 	while (!GetAsyncKeyState(VK_END))

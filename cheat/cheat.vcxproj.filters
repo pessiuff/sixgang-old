@@ -55,6 +55,9 @@
     <ClCompile Include="src\util\memory.cpp">
       <Filter>src\util</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\config.cpp">
+      <Filter>src\core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\minhook\buffer.h">
@@ -192,31 +195,40 @@
     <ClInclude Include="src\valve\ivpanel.h">
       <Filter>src\valve</Filter>
     </ClInclude>
+    <ClInclude Include="ext\json\json.hpp">
+      <Filter>ext\json</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\config.h">
+      <Filter>src\core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ext">
-      <UniqueIdentifier>{f57b76e4-0753-4db3-8064-88012da0e56b}</UniqueIdentifier>
+      <UniqueIdentifier>{034b4281-5dc4-4e77-98c3-c85978538fd2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ext\minhook">
-      <UniqueIdentifier>{ce196d0a-7a30-468a-b475-8ef6fbf91091}</UniqueIdentifier>
+      <UniqueIdentifier>{8c115bc1-d9f3-46f0-8f5d-025d87cae67f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ext\minhook\hde">
-      <UniqueIdentifier>{60e0cd19-f188-4dfe-9c82-d7f687588477}</UniqueIdentifier>
+      <UniqueIdentifier>{b6f883f9-e3d0-43eb-b00c-477d967fef85}</UniqueIdentifier>
     </Filter>
     <Filter Include="ext\imgui">
-      <UniqueIdentifier>{719e8758-fc9e-4e96-94c9-e04d02b762e3}</UniqueIdentifier>
+      <UniqueIdentifier>{a228b5ad-1082-4ec5-a463-a88de3b8ea5f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src">
-      <UniqueIdentifier>{7e6e0801-4b4b-40d8-a59f-eb1fa6a9bab3}</UniqueIdentifier>
+      <UniqueIdentifier>{b7586f0c-c190-4ea5-9e44-693c9714deca}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\core">
-      <UniqueIdentifier>{c33b0b5f-0811-4a8d-9396-e261122b5fc8}</UniqueIdentifier>
+      <UniqueIdentifier>{3279ccab-eb18-484c-87ea-0e9da5ca6239}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\util">
-      <UniqueIdentifier>{c179f37a-1956-4396-b3c8-35e6a0d5ce37}</UniqueIdentifier>
+      <UniqueIdentifier>{5ffd22cd-2414-4fab-93d3-58779fe4028b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\valve">
-      <UniqueIdentifier>{c70644a3-8a5c-4f42-a35a-96c0040db1a0}</UniqueIdentifier>
+      <UniqueIdentifier>{3502c3b6-042b-4818-91c4-6b03c720793d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ext\json">
+      <UniqueIdentifier>{200a0076-c72e-4849-afc1-ba563898d0cb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
