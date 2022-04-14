@@ -181,6 +181,15 @@ void gui::Render() noexcept {
 	ImGui::NewFrame();
 
 	ImGui::Begin("sixgang", &config::menuOpen);
+	ImGui::Checkbox("Test Boolean", &config::testBool);
+	ImGui::NextColumn();
+	if (ImGui::Button("Save Config")) {
+		config::Save();
+	}
+	ImGui::NextColumn();
+	if (ImGui::Button("Load Config")) {
+		config::Load();
+	}
 	ImGui::End();
 
 	ImGui::EndFrame();

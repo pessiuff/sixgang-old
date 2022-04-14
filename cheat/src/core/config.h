@@ -12,7 +12,12 @@
 namespace config {
 	void Setup() noexcept;
 
+	void Save() noexcept;
+	void Load() noexcept;
+
 	inline std::string key = "HWJHGRGRKEUC";
 
 	inline bool menuOpen = false;
+
+	inline bool testBool = false;
 }
