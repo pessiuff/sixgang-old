@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <string_view>
 
-namespace hash
+namespace hash_fnv
 {
 	// fnv constants
 	constexpr std::uint32_t BASE = 0x811C9DC5;

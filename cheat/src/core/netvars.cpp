@@ -23,7 +23,7 @@ void netvars::Dump(const std::string_view base, CRecvTable* table, const std::ui
 		if (std::isdigit(prop->name[0]))
 			continue;
 
-		if (hash::RunTime(prop->name) == hash::CompileTime("baseclass"))
+		if (hash_fnv::RunTime(prop->name) == hash_fnv::CompileTime("baseclass"))
 			continue;
 
 		// not a root table, dump again
@@ -33,6 +33,6 @@ void netvars::Dump(const std::string_view base, CRecvTable* table, const std::ui
 			Dump(base, prop->table, offset + prop->offset);
 
 		// place offset in netvar map
-		data[hash::RunTime(std::format("{}->{}", base, prop->name).c_str())] = offset + prop->offset;
+		data[hash_fnv::RunTime(std::format("{}->{}", base, prop->name).c_str())] = offset + prop->offset;
 	}
 }

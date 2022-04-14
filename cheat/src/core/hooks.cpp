@@ -5,6 +5,8 @@
 
 #include "gui.h"
 
+#include "..\util\hash.h"
+
 #include <intrin.h>
 
 void hooks::Setup() noexcept
@@ -30,6 +32,13 @@ void hooks::Setup() noexcept
 		VirtualFunction(gui::device, 16),
 		&Reset,
 		reinterpret_cast<void**>(&ResetOriginal)
+	);
+
+	// Paint Traverse hook
+	MH_CreateHook(
+		memory::Get(interfaces::panel, 41),
+		&PaintTraverse,
+		reinterpret_cast<void**>(&PaintTraverseOriginal)
 	);
 
 	// CreateMove hook
@@ -92,6 +101,19 @@ HRESULT __stdcall hooks::Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* 
 	const auto result = ResetOriginal(device, device, params);
 	ImGui_ImplDX9_CreateDeviceObjects();
 	return result;
+}
+
+void __stdcall hooks::PaintTraverse(std::uint32_t panel, bool forceRepaint, bool allowForce)
+{
+	auto panel_to_draw = hash_fnv::RunTime(interfaces::panel->GetName(panel));
+
+	switch (panel_to_draw) {
+	case hash_fnv::CompileTime("FocusOverlayPanel"):
+		interfaces::panel->SetKeyboardInputEnabled(panel, config::menuOpen);
+		interfaces::panel->SetMouseInputEnabled(panel, config::menuOpen);
+		break;
+	}
+	return PaintTraverseOriginal(interfaces::panel, panel, forceRepaint, allowForce);
 }
 
 bool __stdcall hooks::CreateMove(float frameTime, CUserCmd* cmd) noexcept

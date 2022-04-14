@@ -29,6 +29,11 @@ namespace hooks
 	inline ResetFn ResetOriginal = nullptr;
 	HRESULT __stdcall Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params) noexcept;
 
+	// paint traverse hook
+	using PaintTraverseFn = void(__thiscall*)(void*, unsigned int, bool, bool);
+	inline PaintTraverseFn PaintTraverseOriginal = { nullptr };
+	void __stdcall PaintTraverse(std::uint32_t panel, bool forceRepaint, bool allowForce);
+
 	// example CreateMove hook
 	using CreateMoveFn = bool(__thiscall*)(IClientModeShared*, float, CUserCmd*) noexcept;
 	inline CreateMoveFn CreateMoveOriginal = nullptr;
