@@ -2,36 +2,19 @@
 
 using nlohmann::json;
 
-void CopyToClipBoard(const char* text) {
-	int size = ::MultiByteToWideChar(CP_UTF8, 0, text, -1, nullptr, 0);
-	if (size < 0) {
-		return;
-	}
-
-	if (::OpenClipboard(NULL)) {
-		::EmptyClipboard();
-		HGLOBAL hGlobal = ::GlobalAlloc(GMEM_ZEROINIT | GMEM_MOVEABLE | GMEM_DDESHARE, (size + 1) * sizeof(WCHAR));
-		if (hGlobal != NULL) {
-			LPWSTR lpszData = (LPWSTR)::GlobalLock(hGlobal);
-			if (lpszData != nullptr) {
-				::MultiByteToWideChar(CP_UTF8, 0, text, -1, lpszData, size);
-				::GlobalUnlock(hGlobal);
-				::SetClipboardData(CF_UNICODETEXT, hGlobal);
-			}
-		}
-		::CloseClipboard();
-	}
-}
-
 void config::Setup() noexcept
 {
 	while (!std::filesystem::exists("sixgang.json")) {
 		try {
 			json configJson;
-			configJson["menuOpen"] = true;
+			configJson["menuOpen"] = false;
+
+			std::string configJson_dump = configJson.dump();
+			
+			std::string encryptedJson = encrypt::encrypt(configJson_dump, config::key);
 
 			std::ofstream config("sixgang.json");
-			config << configJson;
+			config << encryptedJson;
 			
 			config.close();
 			printf_s("Config file wasn't found and created with default settings.\n");
@@ -52,8 +35,10 @@ void config::Setup() noexcept
 #endif
 	try {
 		std::ifstream config("sixgang.json");
-		json configJson;
-		config >> configJson;
+		std::string encryptedJson;
+		config >> encryptedJson;
+		std::string decryptedJson = encrypt::decrypt(encryptedJson, config::key);
+		auto configJson = json::parse(decryptedJson);
 
 		menuOpen = configJson["menuOpen"].get<bool>();
 
@@ -64,8 +49,7 @@ void config::Setup() noexcept
 		printf_s("Exception while loading config file. %s\n", e.what());
 #endif
 #ifndef  _DEBUG
-		CopyToClipBoard(e.what());
-		MessageBoxA(0, "Caught an exception and copied it to your clipboard. Send it to a staff member. The game will close now.", "Exception", MB_OK);
+		MessageBoxA(0, "Caught an exception. Send sixgang.log to staff members.", "Exception", MB_OK);
 		exit(-1);
 #endif
 	}
