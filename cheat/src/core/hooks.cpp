@@ -3,6 +3,8 @@
 // include minhook for epic hookage
 #include "../../ext/minhook/minhook.h"
 
+#include "gui.h"
+
 #include <intrin.h>
 
 void hooks::Setup() noexcept
@@ -16,6 +18,20 @@ void hooks::Setup() noexcept
 		reinterpret_cast<void**>(&AllocKeyValuesMemoryOriginal)
 	);
 
+	// EndScene hook
+	MH_CreateHook(
+		VirtualFunction(gui::device, 42),
+		&EndScene,
+		reinterpret_cast<void**>(&EndSceneOriginal)
+	);
+
+	// Reset hook
+	MH_CreateHook(
+		VirtualFunction(gui::device, 16),
+		&Reset,
+		reinterpret_cast<void**>(&ResetOriginal)
+	);
+
 	// CreateMove hook
 	MH_CreateHook(
 		memory::Get(interfaces::clientMode, 24),
@@ -24,6 +40,8 @@ void hooks::Setup() noexcept
 	);
 
 	MH_EnableHook(MH_ALL_HOOKS);
+	
+	gui::DestroyDirectX();
 }
 
 void hooks::Destroy() noexcept
@@ -46,6 +64,34 @@ void* __stdcall hooks::AllocKeyValuesMemory(const std::int32_t size) noexcept
 
 	// return original
 	return AllocKeyValuesMemoryOriginal(interfaces::keyValuesSystem, size);
+}
+
+long __stdcall hooks::EndScene(IDirect3DDevice9* device) noexcept
+{
+	static const auto returnAddress = _ReturnAddress();
+
+	const auto result = EndSceneOriginal(device, device);
+	
+	// stop endscene from getting called twice
+	if (_ReturnAddress() == returnAddress)
+		return result;
+
+	// call gui
+	if (!gui::setup)
+		gui::SetupMenu(device);
+	
+	if (config::menuOpen)
+		gui::Render();
+
+	return result;
+}
+
+HRESULT __stdcall hooks::Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params) noexcept
+{
+	ImGui_ImplDX9_InvalidateDeviceObjects();
+	const auto result = ResetOriginal(device, device, params);
+	ImGui_ImplDX9_CreateDeviceObjects();
+	return result;
 }
 
 bool __stdcall hooks::CreateMove(float frameTime, CUserCmd* cmd) noexcept

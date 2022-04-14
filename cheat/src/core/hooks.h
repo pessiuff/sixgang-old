@@ -1,5 +1,6 @@
 #pragma once
 #include "interfaces.h"
+#include <d3d9.h>
 
 namespace hooks
 {
@@ -13,6 +14,20 @@ namespace hooks
 	using AllocKeyValuesMemoryFn = void* (__thiscall*)(void*, const std::int32_t) noexcept;
 	inline AllocKeyValuesMemoryFn AllocKeyValuesMemoryOriginal;
 	void* __stdcall AllocKeyValuesMemory(const std::int32_t size) noexcept;
+
+	// virtualfunction
+	constexpr void* VirtualFunction(void* thisptr, size_t index) noexcept {
+		return (*static_cast<void***>(thisptr))[index];
+	}
+	
+	// endscene hook
+	using EndSceneFn = long(__thiscall*)(void*, IDirect3DDevice9*) noexcept;
+	inline EndSceneFn EndSceneOriginal = nullptr;
+	long __stdcall EndScene(IDirect3DDevice9* device) noexcept;
+
+	using ResetFn = HRESULT(__thiscall*)(void*, IDirect3DDevice9* device, D3DPRESENT_PARAMETERS*) noexcept;
+	inline ResetFn ResetOriginal = nullptr;
+	HRESULT __stdcall Reset(IDirect3DDevice9* device, D3DPRESENT_PARAMETERS* params) noexcept;
 
 	// example CreateMove hook
 	using CreateMoveFn = bool(__thiscall*)(IClientModeShared*, float, CUserCmd*) noexcept;

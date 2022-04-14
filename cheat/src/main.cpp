@@ -6,6 +6,7 @@
 #include "core/hooks.h"
 
 #include "core/config.h"
+#include "core/gui.h"
 
 // setup our cheat & unload it when exit key is pressed
 DWORD WINAPI Setup(LPVOID lpParam)
@@ -22,7 +23,8 @@ DWORD WINAPI Setup(LPVOID lpParam)
 
 	memory::Setup();		// find signatures
 	interfaces::Setup();    // capture interfaces
-	netvars::Setup();		// dump latest offsets`
+	netvars::Setup();		// dump latest offsets
+	gui::Setup();           // setup gui
 	hooks::Setup();			// place hooks
 
 	config::Setup();        // setup config
@@ -69,6 +71,7 @@ BOOL APIENTRY DllMain(HMODULE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
 	} else if (fdwReason == DLL_PROCESS_DETACH) {
 		// dll is being unloaded
 		hooks::Destroy();		// restore hooks
+		gui::Destroy();		// restore gui
 	}
 
 	// successful DLL_PROCESS_ATTACH

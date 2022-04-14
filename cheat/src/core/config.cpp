@@ -7,7 +7,7 @@ void config::Setup() noexcept
 	while (!std::filesystem::exists("sixgang.json")) {
 		try {
 			json configJson;
-			configJson["menuOpen"] = false;
+			configJson["menuOpen"] = true;
 
 			std::string configJson_dump = configJson.dump();
 			

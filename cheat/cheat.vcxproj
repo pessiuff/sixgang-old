@@ -105,6 +105,9 @@
       <DeploymentContent>false</DeploymentContent>
     </ClCompile>
     <ClCompile Include="src\core\globals.cpp" />
+    <ClCompile Include="src\core\gui.cpp">
+      <DeploymentContent>false</DeploymentContent>
+    </ClCompile>
     <ClCompile Include="src\core\hooks.cpp" />
     <ClCompile Include="src\core\interfaces.cpp" />
     <ClCompile Include="src\core\netvars.cpp" />
@@ -136,6 +139,9 @@
       <DeploymentContent>false</DeploymentContent>
     </ClInclude>
     <ClInclude Include="src\core\globals.h" />
+    <ClInclude Include="src\core\gui.h">
+      <DeploymentContent>false</DeploymentContent>
+    </ClInclude>
     <ClInclude Include="src\core\hooks.h" />
     <ClInclude Include="src\core\interfaces.h" />
     <ClInclude Include="src\core\netvars.h" />
